@@ -1,8 +1,12 @@
 import Fastify, { FastifyInstance } from "fastify";
-import routes from "./routes/index.js";
+import mutantRoutes from "./mutants/routes/index";
 
 export function buildApp(): FastifyInstance {
   const app = Fastify({ logger: true });
-  routes(app);
+  app.register(mutantRoutes, { prefix: "/mutants" });
+
+  app.get("/", async (request, reply) => ({
+    message: "Welcome to the Mutant Detection API",
+  }));
   return app;
 }
