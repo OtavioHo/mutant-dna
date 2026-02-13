@@ -14,8 +14,9 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "noEmitOnError": true,
+    "inlineSources": true,
     "typeRoots": ["./node_modules/@types"],
   },
-  "include": ["src/**/*.ts", "src/tests/**/*.ts"],
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
