@@ -22,5 +22,19 @@ export default function routes(app: FastifyInstance) {
   const container = buildContainer();
   app.decorate("mutantContainer", container);
 
-  app.get("/", container.mutantsController.checkMutant);
+  app.post("/", {
+    handler: container.mutantsController.checkMutant,
+    schema: {
+      body: {
+        type: "object",
+        properties: {
+          dna: {
+            type: "array",
+            items: { type: "string" },
+          },
+        },
+        required: ["dna"],
+      },
+    },
+  });
 }

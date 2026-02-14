@@ -32,7 +32,7 @@ describe("buildApp", () => {
 
   it("should register mutant routes with /mutants prefix", async () => {
     const response = await app.inject({
-      method: "GET",
+      method: "POST",
       url: "/mutants",
     });
 

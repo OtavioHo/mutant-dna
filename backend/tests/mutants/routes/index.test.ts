@@ -20,7 +20,7 @@ describe("routes", () => {
 
     mockApp = {
       decorate: vi.fn(),
-      get: vi.fn(),
+      post: vi.fn(),
     } as any;
 
     vi.mocked(buildContainer).mockReturnValue(mockContainer);
@@ -41,9 +41,25 @@ describe("routes", () => {
     );
   });
 
-  it("should register GET / route with checkMutant handler", () => {
+  it("should register POST / route with checkMutant handler", () => {
     routes(mockApp);
 
-    expect(mockApp.get).toHaveBeenCalledWith("/", mockCheckMutant);
+    expect(mockApp.post).toHaveBeenCalledWith("/", {
+      handler: mockCheckMutant,
+      schema: {
+        body: {
+          properties: {
+            dna: {
+              items: {
+                type: "string",
+              },
+              type: "array",
+            },
+          },
+          required: ["dna"],
+          type: "object",
+        },
+      },
+    });
   });
 });

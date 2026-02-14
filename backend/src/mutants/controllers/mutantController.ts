@@ -6,10 +6,21 @@ export default class DefaultMutantsController implements MutantsController {
   constructor(private mutantsService: MutantsService) {}
 
   checkMutant = async (
-    request: FastifyRequest,
+    request: FastifyRequest<{ Body: { dna: string[] } }>,
     reply: FastifyReply,
   ): Promise<void> => {
-    const result = await this.mutantsService.checkDNA([]);
+    const dna = request.body?.dna;
+
+    if (
+      !dna ||
+      !Array.isArray(dna) ||
+      !dna.every((strand) => typeof strand === "string")
+    ) {
+      reply.status(400).send({ message: "Invalid DNA format" });
+      return;
+    }
+
+    const result = await this.mutantsService.checkDNA(dna);
     if (result) {
       reply.status(200).send({ message: "Mutant detected" });
     } else {
