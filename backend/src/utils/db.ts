@@ -9,7 +9,7 @@ const pool = new Pool({
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   database: process.env.PGDATABASE,
-  port: process.env.PGPORT ? Number(process.env.PGPORT) : undefined,
+  port: process.env.PGPORT ? Number(process.env.PGPORT) : 5432,
   max: process.env.PG_MAX ? Number(process.env.PG_MAX) : 10,
   idleTimeoutMillis: process.env.PG_IDLE_MS
     ? Number(process.env.PG_IDLE_MS)
