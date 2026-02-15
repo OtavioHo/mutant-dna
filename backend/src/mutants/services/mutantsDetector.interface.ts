@@ -1,3 +1,3 @@
-export default interface MutantsDetector {
+export interface MutantsDetector {
   isMutant(dna: string[]): Promise<boolean>;
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import DefaultMutantsRepository from "../../../src/mutants/repositories/mutantsRepository";
+import { DefaultMutantsRepository } from "../../../src/mutants/repositories/mutantsRepository";
 
 describe("DefaultMutantsRepository", () => {
   let mockQuery: ReturnType<typeof vi.fn> &

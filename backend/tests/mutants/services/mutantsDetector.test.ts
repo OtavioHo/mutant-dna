@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import DefaultMutantDetector from "../../../src/mutants/services/mutantDetector";
+import { DefaultMutantsDetector } from "../../../src/mutants/services/mutantsDetector";
 
-describe("DefaultMutantDetector", () => {
-  const detector = new DefaultMutantDetector();
+describe("DefaultMutantsDetector", () => {
+  const detector = new DefaultMutantsDetector();
 
   it("should return a boolean", async () => {
     const dna = ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"];

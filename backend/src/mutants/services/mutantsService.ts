@@ -1,11 +1,11 @@
-import MutantsRepository from "../repositories/mutantsRepository.interface";
-import MutantDetector from "./mutantDetector.interface";
-import MutantsService from "./mutantService.interface";
+import { MutantsRepository } from "../repositories/mutantsRepository.interface";
+import { MutantsDetector } from "./mutantsDetector.interface";
+import { MutantsService } from "./mutantsService.interface";
 import { MutantsHashService } from "./mutantsHashService.interface";
 
-export default class DefaultMutantsService implements MutantsService {
+export class DefaultMutantsService implements MutantsService {
   constructor(
-    private mutantDetector: MutantDetector,
+    private mutantsDetector: MutantsDetector,
     private mutantsRepository: MutantsRepository,
     private mutantsHashService: MutantsHashService,
   ) {}
@@ -18,7 +18,7 @@ export default class DefaultMutantsService implements MutantsService {
       return cachedResult.is_mutant;
     }
 
-    const result = await this.mutantDetector.isMutant(dna);
+    const result = await this.mutantsDetector.isMutant(dna);
 
     this.mutantsRepository.saveMutant(dna, hash, result);
 

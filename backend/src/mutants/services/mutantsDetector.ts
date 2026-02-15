@@ -1,6 +1,6 @@
-import MutantDetector from "./mutantDetector.interface";
+import { MutantsDetector } from "./mutantsDetector.interface";
 
-export default class DefaultMutantDetector implements MutantDetector {
+export class DefaultMutantsDetector implements MutantsDetector {
   async isMutant(dna: string[]): Promise<boolean> {
     return Promise.resolve(this.check(dna)); // Placeholder: Implement the actual mutant detection logic here
   }

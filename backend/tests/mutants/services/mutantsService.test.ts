@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import DefaultMutantsService from "../../../src/mutants/services/mutantService";
-import type MutantDetector from "../../../src/mutants/services/mutantDetector.interface";
-import type MutantsRepository from "../../../src/mutants/repositories/mutantsRepository.interface";
+import { DefaultMutantsService } from "../../../src/mutants/services/mutantsService";
+import { MutantsDetector } from "../../../src/mutants/services/mutantsDetector.interface";
+import { MutantsRepository } from "../../../src/mutants/repositories/mutantsRepository.interface";
 import { MutantsHashService } from "../../../src/mutants/services/mutantsHashService.interface";
 
 describe("DefaultMutantsService", () => {
-  let mutantDetector: MutantDetector;
+  let mutantDetector: MutantsDetector;
   let mutantsRepository: MutantsRepository;
   let mutantsHashService: MutantsHashService;
   let service: DefaultMutantsService;

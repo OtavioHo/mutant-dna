@@ -1,3 +1,3 @@
-export default interface MutantsService {
+export interface MutantsService {
   checkDNA(dna: string[]): Promise<boolean>;
 }

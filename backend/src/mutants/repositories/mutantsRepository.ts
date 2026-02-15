@@ -1,6 +1,6 @@
-import MutantsRepository from "./mutantsRepository.interface";
+import { MutantsRepository } from "./mutantsRepository.interface";
 
-export default class DefaultMutantsRepository implements MutantsRepository {
+export class DefaultMutantsRepository implements MutantsRepository {
   constructor(private query: (text: string, params?: any[]) => Promise<any>) {}
 
   saveMutant = async (

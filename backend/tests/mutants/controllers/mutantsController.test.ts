@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { FastifyRequest, FastifyReply } from "fastify";
-import DefaultMutantsController from "../../../src/mutants/controllers/mutantController";
-import MutantsService from "../../../src/mutants/services/mutantService.interface";
+import { DefaultMutantsController } from "../../../src/mutants/controllers/mutantsController";
+import { MutantsService } from "../../../src/mutants/services/mutantsService.interface";
 
 describe("DefaultMutantsController", () => {
   let controller: DefaultMutantsController;

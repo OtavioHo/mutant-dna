@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import MutantsService from "../services/mutantService.interface";
-import MutantsController from "./mutantController.interface";
+import { MutantsService } from "../services/mutantsService.interface";
+import { MutantsController } from "./mutantsController.interface";
 
-export default class DefaultMutantsController implements MutantsController {
+export class DefaultMutantsController implements MutantsController {
   constructor(private mutantsService: MutantsService) {}
 
   checkMutant = async (
