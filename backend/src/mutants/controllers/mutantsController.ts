@@ -14,7 +14,7 @@ export class DefaultMutantsController implements MutantsController {
     if (
       !dna ||
       !Array.isArray(dna) ||
-      !dna.every((strand) => typeof strand === "string")
+      !dna.every((strand) => /^[ATCG]+$/.test(strand))
     ) {
       reply.status(400).send({ message: "Invalid DNA format" });
       return;
