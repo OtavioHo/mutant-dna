@@ -16,4 +16,17 @@ export default class DefaultMutantsRepository implements MutantsRepository {
 
     await this.query(sql, [dna, hash, isMutant]);
   };
+
+  getMutantByHash = async (
+    hash: string,
+  ): Promise<{ is_mutant: boolean } | null> => {
+    const sql = `
+        SELECT is_mutant
+        FROM mutants
+        WHERE dna_hash = $1
+      `;
+
+    const result = await this.query(sql, [hash]);
+    return result.rows[0] || null;
+  };
 }

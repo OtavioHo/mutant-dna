@@ -60,4 +60,38 @@ describe("DefaultMutantsRepository", () => {
       ).rejects.toThrow("Database error");
     });
   });
+
+  describe("getMutantByHash", () => {
+    it("should return mutant data when hash exists", async () => {
+      const hash = "existingHash";
+      const expectedResult = { is_mutant: true };
+      mockQuery.mockResolvedValueOnce({ rows: [expectedResult] });
+
+      const result = await repository.getMutantByHash(hash);
+
+      expect(result).toEqual(expectedResult);
+      expect(mockQuery).toHaveBeenCalledWith(
+        expect.stringContaining("SELECT is_mutant"),
+        [hash],
+      );
+    });
+
+    it("should return null when hash does not exist", async () => {
+      const hash = "nonExistingHash";
+      mockQuery.mockResolvedValueOnce({ rows: [] });
+
+      const result = await repository.getMutantByHash(hash);
+
+      expect(result).toBeNull();
+    });
+
+    it("should propagate errors from query", async () => {
+      const error = new Error("Database error");
+      mockQuery.mockRejectedValueOnce(error);
+
+      await expect(repository.getMutantByHash("hash")).rejects.toThrow(
+        "Database error",
+      );
+    });
+  });
 });
