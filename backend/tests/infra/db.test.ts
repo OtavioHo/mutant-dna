@@ -42,7 +42,7 @@ describe("db", () => {
     process.env.PG_MAX = "20";
     process.env.PG_IDLE_MS = "60000";
 
-    await import("../../src/utils/db");
+    await import("../../src/infra/db");
 
     expect(Pool).toHaveBeenCalledWith({
       connectionString: "postgresql://test",
@@ -62,7 +62,7 @@ describe("db", () => {
     delete process.env.PG_IDLE_MS;
     delete process.env.PGPORT;
 
-    await import("../../src/utils/db");
+    await import("../../src/infra/db");
 
     expect(Pool).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -75,7 +75,7 @@ describe("db", () => {
   });
 
   it("should register error handler on pool", async () => {
-    await import("../../src/utils/db");
+    await import("../../src/infra/db");
 
     expect(mockPoolInstance.on).toHaveBeenCalledWith(
       "error",
@@ -84,7 +84,7 @@ describe("db", () => {
   });
 
   it("should query the pool with text and params", async () => {
-    const { query } = await import("../../src/utils/db");
+    const { query } = await import("../../src/infra/db");
     const mockResult = { rows: [{ id: 1 }], rowCount: 1 };
     mockPoolInstance.query.mockResolvedValue(mockResult);
 
@@ -98,7 +98,7 @@ describe("db", () => {
   });
 
   it("should query the pool without params", async () => {
-    const { query } = await import("../../src/utils/db");
+    const { query } = await import("../../src/infra/db");
     const mockResult = { rows: [], rowCount: 0 };
     mockPoolInstance.query.mockResolvedValue(mockResult);
 
@@ -112,7 +112,7 @@ describe("db", () => {
   });
 
   it("should return the pool instance from getPool", async () => {
-    const { getPool, default: pool } = await import("../../src/utils/db");
+    const { getPool, default: pool } = await import("../../src/infra/db");
 
     const returnedPool = getPool();
 
@@ -120,7 +120,7 @@ describe("db", () => {
   });
 
   it("should close the pool when closePool is called", async () => {
-    const { closePool } = await import("../../src/utils/db");
+    const { closePool } = await import("../../src/infra/db");
     mockPoolInstance.end.mockResolvedValue(undefined);
 
     await closePool();
@@ -132,7 +132,7 @@ describe("db", () => {
     const consoleErrorSpy = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    await import("../../src/utils/db");
+    await import("../../src/infra/db");
 
     const errorHandler = mockPoolInstance.on.mock.calls.find(
       (call: any) => call[0] === "error",

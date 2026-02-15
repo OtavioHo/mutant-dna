@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import buildContainer from "../container";
+import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
 
 /**
  * Register mutant-related routes on a Fastify instance.
@@ -18,8 +19,11 @@ import buildContainer from "../container";
  * `app.get`. If `checkMutant` does not rely on `this` or is already bound, no
  * explicit `.bind` is necessary.
  */
-export default function routes(app: FastifyInstance) {
-  const container = buildContainer();
+export default function routes(
+  app: FastifyInstance,
+  cacheProvider: CacheProvider,
+) {
+  const container = buildContainer(cacheProvider);
   app.decorate("mutantContainer", container);
 
   app.post("/", {

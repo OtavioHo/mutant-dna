@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { DefaultStatsRepository } from "../../../src/stats/repositories/statsRepository";
+import { CacheProvider } from "../../../src/infra/cache/cacheProvider.interface";
 
 describe("DefaultStatsRepository", () => {
   beforeEach(() => {
@@ -11,14 +12,22 @@ describe("DefaultStatsRepository", () => {
       rows: [{ count_mutant_dna: 40, count_human_dna: 100 }],
     });
 
-    const repo = new DefaultStatsRepository(mockQuery);
+    const mockCache = {
+      get: vi.fn(),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as CacheProvider;
+
+    const repo = new DefaultStatsRepository(mockQuery, mockCache);
     const stats = await repo.getStats();
 
     expect(mockQuery).toHaveBeenCalledTimes(1);
     const calledSql = mockQuery.mock.calls[0][0] as string;
     expect(calledSql).toContain("FROM mutants");
     expect(calledSql).toContain("SUM(CASE WHEN is_mutant THEN 1 ELSE 0 END)");
-    expect(calledSql).toContain("SUM(CASE WHEN NOT is_mutant THEN 1 ELSE 0 END)");
+    expect(calledSql).toContain(
+      "SUM(CASE WHEN NOT is_mutant THEN 1 ELSE 0 END)",
+    );
     expect(stats).toEqual({ count_mutant_dna: 40, count_human_dna: 100 });
   });
 
@@ -30,25 +39,94 @@ describe("DefaultStatsRepository", () => {
       ],
     });
 
-    const repo = new DefaultStatsRepository(mockQuery);
+    const mockCache = {
+      get: vi.fn(),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as CacheProvider;
+
+    const repo = new DefaultStatsRepository(mockQuery, mockCache);
     const stats = await repo.getStats();
 
     expect(stats).toEqual({ count_mutant_dna: 1, count_human_dna: 2 });
   });
 
-  it("returns undefined when query returns no rows", async () => {
+  it("returns default counts when query returns no rows", async () => {
     const mockQuery = vi.fn().mockResolvedValue({ rows: [] });
+    const mockCache = {
+      get: vi.fn(),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as CacheProvider;
 
-    const repo = new DefaultStatsRepository(mockQuery);
+    const repo = new DefaultStatsRepository(mockQuery, mockCache);
     const stats = await repo.getStats();
 
-    expect(stats).toBeUndefined();
+    expect(stats).toEqual({ count_mutant_dna: 0, count_human_dna: 0 });
   });
 
   it("propagates errors from the query function", async () => {
     const mockQuery = vi.fn().mockRejectedValue(new Error("db error"));
+    const mockCache = {
+      get: vi.fn(),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as CacheProvider;
 
-    const repo = new DefaultStatsRepository(mockQuery);
+    const repo = new DefaultStatsRepository(mockQuery, mockCache);
     await expect(repo.getStats()).rejects.toThrow("db error");
+  });
+
+  it("returns cached stats when cache has value and skips database query", async () => {
+    const mockQuery = vi.fn();
+    const cachedValue = { count_mutant_dna: 10, count_human_dna: 20 };
+    const mockCache = {
+      get: vi.fn().mockResolvedValue(JSON.stringify(cachedValue)),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as unknown as CacheProvider;
+
+    const repo = new DefaultStatsRepository(mockQuery, mockCache);
+    const stats = await repo.getStats();
+
+    expect(mockCache.get).toHaveBeenCalledWith("stats");
+    expect(mockQuery).not.toHaveBeenCalled();
+    expect(mockCache.set).not.toHaveBeenCalled();
+    expect(stats).toEqual(cachedValue);
+  });
+
+  it("sets cache when no cached value and query returns a row", async () => {
+    const row = { count_mutant_dna: 7, count_human_dna: 3 };
+    const mockQuery = vi.fn().mockResolvedValue({ rows: [row] });
+    const mockCache = {
+      get: vi.fn().mockResolvedValue(undefined),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as unknown as CacheProvider;
+
+    const repo = new DefaultStatsRepository(mockQuery, mockCache);
+    const stats = await repo.getStats();
+
+    expect(mockCache.get).toHaveBeenCalledWith("stats");
+    expect(mockQuery).toHaveBeenCalled();
+    expect(mockCache.set).toHaveBeenCalledWith("stats", JSON.stringify(row));
+    expect(stats).toEqual(row);
+  });
+
+  it("returns default counts when query returns no rows (rows empty)", async () => {
+    const mockQuery = vi.fn().mockResolvedValue({ rows: [] });
+    const mockCache = {
+      get: vi.fn().mockResolvedValue(undefined),
+      set: vi.fn(),
+      del: vi.fn(),
+    } as unknown as CacheProvider;
+
+    const repo = new DefaultStatsRepository(mockQuery, mockCache);
+    const stats = await repo.getStats();
+
+    expect(mockCache.get).toHaveBeenCalledWith("stats");
+    expect(mockQuery).toHaveBeenCalled();
+    expect(mockCache.set).not.toHaveBeenCalled();
+    expect(stats).toEqual({ count_mutant_dna: 0, count_human_dna: 0 });
   });
 });
