@@ -1,14 +1,20 @@
-import { query } from "../../infra/db";
 import { DefaultMutantsController } from "../controllers/mutantsController";
 import { DefaultMutantsRepository } from "../repositories/mutantsRepository";
 import { DefaultMutantsDetector } from "../services/mutantsDetector";
 import { DefaultMutantsService } from "../services/mutantsService";
 import { DefaultMutantsHashService } from "../services/mutantsHashService";
 import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
 
-export default function buildContainer(cacheProvider: CacheProvider) {
+export default function buildContainer(
+  databaseProvider: DatabaseProvider,
+  cacheProvider: CacheProvider,
+) {
   const detector = new DefaultMutantsDetector();
-  const mutantsRepository = new DefaultMutantsRepository(query, cacheProvider);
+  const mutantsRepository = new DefaultMutantsRepository(
+    databaseProvider,
+    cacheProvider,
+  );
   const mutantsHashService = new DefaultMutantsHashService();
   const mutantsService = new DefaultMutantsService(
     detector,

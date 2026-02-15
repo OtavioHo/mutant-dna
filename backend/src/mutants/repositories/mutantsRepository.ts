@@ -1,9 +1,10 @@
 import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
 import { MutantsRepository } from "./mutantsRepository.interface";
 
 export class DefaultMutantsRepository implements MutantsRepository {
   constructor(
-    private query: (text: string, params?: any[]) => Promise<any>,
+    private database: DatabaseProvider,
     private cache: CacheProvider,
   ) {}
 
@@ -18,7 +19,7 @@ export class DefaultMutantsRepository implements MutantsRepository {
         ON CONFLICT (dna_hash) DO NOTHING
       `;
 
-    await this.query(sql, [dna, hash, isMutant]);
+    await this.database.query(sql, [dna, hash, isMutant]);
 
     // update stats cache
     try {
@@ -66,15 +67,17 @@ export class DefaultMutantsRepository implements MutantsRepository {
         WHERE dna_hash = $1
       `;
 
-    const result = await this.query(sql, [hash]);
+    const result = await this.database.query<{ is_mutant: boolean }>(sql, [
+      hash,
+    ]);
 
-    if (result && result.rows[0]) {
+    if (result && result.length > 0) {
       try {
-        await this.cache.set(`mutant:${hash}`, JSON.stringify(result.rows[0]));
+        await this.cache.set(`mutant:${hash}`, JSON.stringify(result[0]));
       } catch (err) {
         console.error("Error caching mutant result:", err);
       }
-      return result.rows[0];
+      return result[0];
     }
 
     return null;

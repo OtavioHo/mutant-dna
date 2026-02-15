@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 import buildContainer from "../container";
 import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
 
 /**
  * Register mutant-related routes on a Fastify instance.
@@ -21,9 +22,10 @@ import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
  */
 export default function routes(
   app: FastifyInstance,
+  databaseProvider: DatabaseProvider,
   cacheProvider: CacheProvider,
 ) {
-  const container = buildContainer(cacheProvider);
+  const container = buildContainer(databaseProvider, cacheProvider);
   app.decorate("mutantContainer", container);
 
   app.post("/", {

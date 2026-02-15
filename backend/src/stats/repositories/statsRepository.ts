@@ -1,9 +1,10 @@
 import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
 import { StatsRepository } from "./statsRepository.interface";
 
 export class DefaultStatsRepository implements StatsRepository {
   constructor(
-    private query: (text: string, params?: any[]) => Promise<any>,
+    private database: DatabaseProvider,
     private cache: CacheProvider,
   ) {}
 
@@ -24,10 +25,13 @@ export class DefaultStatsRepository implements StatsRepository {
       FROM mutants
     `;
 
-    const result = await this.query(sql);
-    if (result.rows && result.rows.length > 0) {
-      await this.cache.set("stats", JSON.stringify(result.rows[0]));
-      return result.rows[0];
+    const result = await this.database.query<{
+      count_mutant_dna: number;
+      count_human_dna: number;
+    }>(sql);
+    if (result && result.length > 0) {
+      await this.cache.set("stats", JSON.stringify(result[0]));
+      return result[0];
     }
 
     return {

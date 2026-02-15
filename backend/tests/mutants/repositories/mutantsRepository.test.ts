@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { DefaultMutantsRepository } from "../../../src/mutants/repositories/mutantsRepository";
 import { CacheProvider } from "../../../src/infra/cache/cacheProvider.interface";
 import { afterEach } from "node:test";
+import { DatabaseProvider } from "../../../src/infra/database/databaseProvider.interface";
 
 describe("DefaultMutantsRepository", () => {
   let mockQuery: ReturnType<typeof vi.fn> &
@@ -9,6 +10,7 @@ describe("DefaultMutantsRepository", () => {
   let mockCache: ReturnType<typeof vi.fn> & CacheProvider;
   let repository: DefaultMutantsRepository;
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  let mockDatabase: { query: typeof mockQuery } & DatabaseProvider;
 
   beforeEach(() => {
     mockQuery = vi.fn() as any;
@@ -17,7 +19,8 @@ describe("DefaultMutantsRepository", () => {
       set: vi.fn(),
       del: vi.fn(),
     } as any;
-    repository = new DefaultMutantsRepository(mockQuery, mockCache);
+    mockDatabase = { query: mockQuery } as unknown as any;
+    repository = new DefaultMutantsRepository(mockDatabase, mockCache);
 
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
@@ -185,7 +188,7 @@ describe("DefaultMutantsRepository", () => {
     it("should return mutant data when hash exists", async () => {
       const hash = "existingHash";
       const expectedResult = { is_mutant: true };
-      mockQuery.mockResolvedValueOnce({ rows: [expectedResult] });
+      mockQuery.mockResolvedValueOnce([expectedResult]);
 
       const result = await repository.getMutantByHash(hash);
 
@@ -212,7 +215,7 @@ describe("DefaultMutantsRepository", () => {
 
     it("should return null when hash does not exist", async () => {
       const hash = "nonExistingHash";
-      mockQuery.mockResolvedValueOnce({ rows: [] });
+      mockQuery.mockResolvedValueOnce([]);
 
       const result = await repository.getMutantByHash(hash);
 
@@ -247,7 +250,7 @@ describe("DefaultMutantsRepository", () => {
     it("should cache mutant result after fetching from database", async () => {
       const hash = "dbHash";
       const dbResult = { is_mutant: true };
-      mockQuery.mockResolvedValueOnce({ rows: [dbResult] });
+      mockQuery.mockResolvedValueOnce([dbResult]);
 
       const result = await repository.getMutantByHash(hash);
 
@@ -262,7 +265,7 @@ describe("DefaultMutantsRepository", () => {
       const hash = "dbHash";
       const dbResult = { is_mutant: true };
       const error = new Error("Cache error");
-      mockQuery.mockResolvedValueOnce({ rows: [dbResult] });
+      mockQuery.mockResolvedValueOnce([dbResult]);
       (
         mockCache.set as unknown as ReturnType<typeof vi.fn>
       ).mockRejectedValueOnce(error);
