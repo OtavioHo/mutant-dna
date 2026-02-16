@@ -164,13 +164,13 @@ http://localhost:3000
 
 ### Endpoints
 
-#### 1. **POST /mutants**
+#### 1. **POST /mutant**
 
 Analyzes a DNA sequence to determine if it's mutant.
 
 **Request:**
 ```http
-POST /mutants
+POST /mutant
 Content-Type: application/json
 
 {

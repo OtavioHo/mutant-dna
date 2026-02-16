@@ -23,7 +23,7 @@ export async function buildApp(): Promise<FastifyInstance> {
   });
 
   app.register((app) => mutantRoutes(app, databaseProvider, cacheProvider), {
-    prefix: "/mutants",
+    prefix: "/mutant",
   });
   app.register((app) => statsRoutes(app, databaseProvider, cacheProvider), {
     prefix: "/stats",

@@ -4,7 +4,7 @@ export const useCheckMutant = () => {
   const { execute, reset, loading, error, data, code } = useApiCall();
 
   const executeRequest = (dna: string[]) =>
-    execute("/mutants", {
+    execute("/mutant", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

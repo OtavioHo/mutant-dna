@@ -30,10 +30,10 @@ describe("buildApp", () => {
     });
   });
 
-  it("should register mutant routes with /mutants prefix", async () => {
+  it("should register mutant routes with /mutant prefix", async () => {
     const response = await app.inject({
       method: "POST",
-      url: "/mutants",
+      url: "/mutant",
     });
 
     // Should not return 404, meaning the route is registered
