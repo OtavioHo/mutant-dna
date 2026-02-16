@@ -319,7 +319,15 @@ docker-compose up -d --build
 cd backend
 
 # Set up environment variables
-cp .env.example .env
+# Configure environment variables
+# Edit .env and set your database and Redis connection:
+# PGHOST=localhost
+# PGUSER=your_db_user
+# PGPASSWORD=your_db_password
+# PGDATABASE=your_db_name
+# PGPORT=5432
+# REDIS_URL=redis://localhost:6379
+cp .env.example .env 
 
 # Run database migrations
 npm run migrate
