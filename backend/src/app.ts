@@ -6,16 +6,22 @@ import { RedisCacheProvider } from "./infra/cache/redisProvider.js";
 import { PostgresProvider } from "./infra/database/postgresProvider.js";
 import dotenv from "dotenv";
 
-export function buildApp(): FastifyInstance {
+export async function buildApp(): Promise<FastifyInstance> {
   dotenv.config();
 
   const databaseProvider = new PostgresProvider();
   const cacheProvider = new RedisCacheProvider();
 
   const app = Fastify({ logger: true });
-  app.register(cors, {
-    origin: "*",
+
+  // Register CORS first, before any routes
+  await app.register(cors, {
+    origin: true, // Allow all origins
+    credentials: true,
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   });
+
   app.register((app) => mutantRoutes(app, databaseProvider, cacheProvider), {
     prefix: "/mutants",
   });
