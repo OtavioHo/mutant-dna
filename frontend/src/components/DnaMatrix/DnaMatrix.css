@@ -1,0 +1,35 @@
+.center-container {
+  display: flex;
+  justify-content: center;
+}
+
+.matrix-container {
+  margin-top: 2rem;
+  overflow-y: auto;
+  max-width: fit-content;
+}
+
+.char-line {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  max-height: 400px;
+  padding: 4px;
+  border-radius: 8px;
+  max-width: max-content;
+}
+
+.char-container {
+  min-width: 40px;
+  max-width: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
