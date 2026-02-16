@@ -14,7 +14,3 @@ export const useCheckMutant = () => {
 
   return { execute: executeRequest, reset, loading, error, data, code };
 };
-
-export interface MutantRequest {
-  dna: string[];
-}
