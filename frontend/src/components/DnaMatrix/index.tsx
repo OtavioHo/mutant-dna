@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import "./index.css";
+import "./DnaMatrix.css";
 
 const DnaMatrix = ({ dna }: { dna: string[] }): JSX.Element => {
   return (

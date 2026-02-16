@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import DnaMatrix from "./components/DnaMatrix";
+import { useCheckMutant } from "./api/mutants";
 
 function App() {
   const [dna, setDna] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [valid, setValid] = useState<boolean | null>(false);
+  const {
+    execute: checkMutant,
+    loading: loadingCheckMutant,
+    error: errorCheckMutant,
+    code: codeCheckMutant,
+    reset: resetCheckMutant,
+  } = useCheckMutant();
 
   useEffect(() => {
     setDna(inputValue.split(/[,]|\n/).filter((line) => line.trim() !== ""));
+    if (codeCheckMutant !== null) {
+      resetCheckMutant();
+    }
   }, [inputValue]);
 
   useEffect(() => {
@@ -36,12 +47,24 @@ function App() {
       <DnaMatrix dna={dna} />
       {valid ? <p>Valid DNA sequence</p> : <p>Invalid DNA sequence</p>}
       <button
+        disabled={!valid || loadingCheckMutant}
         onClick={() => {
-          console.log("Checking mutant status for DNA:", dna);
+          checkMutant(dna);
         }}
       >
         Is mutant?
       </button>
+
+      {loadingCheckMutant && <p>Checking...</p>}
+      {errorCheckMutant && codeCheckMutant !== 403 && (
+        <p>Error: {errorCheckMutant.message}</p>
+      )}
+      {codeCheckMutant !== null &&
+        (codeCheckMutant === 200 ? (
+          <p>Result: Mutant</p>
+        ) : (
+          <p>Result: Human</p>
+        ))}
     </>
   );
 }
