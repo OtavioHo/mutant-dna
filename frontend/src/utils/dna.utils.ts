@@ -17,7 +17,10 @@ export const isValidDnaSequence = (dna: string[]): boolean => {
  * @returns Array of DNA strings
  */
 export const parseDnaInput = (input: string): string[] => {
-  return input.split(/[,]|\n/).filter((line) => line.trim() !== "");
+  return input
+    .split(/[,]|\n/)
+    .filter((line) => line.trim() !== "")
+    .map((line) => line.trim());
 };
 
 /**
