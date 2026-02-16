@@ -1,4 +1,5 @@
 import Fastify, { FastifyInstance } from "fastify";
+import cors from "@fastify/cors";
 import { mutantRoutes } from "./mutants/routes/index.js";
 import { statsRoutes } from "./stats/routes/index.js";
 import { RedisCacheProvider } from "./infra/cache/redisProvider.js";
@@ -12,6 +13,9 @@ export function buildApp(): FastifyInstance {
   const cacheProvider = new RedisCacheProvider();
 
   const app = Fastify({ logger: true });
+  app.register(cors, {
+    origin: "*",
+  });
   app.register((app) => mutantRoutes(app, databaseProvider, cacheProvider), {
     prefix: "/mutants",
   });
