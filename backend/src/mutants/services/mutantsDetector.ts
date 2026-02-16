@@ -1,11 +1,11 @@
 import { MutantsDetector } from "./mutantsDetector.interface.js";
 
 export class DefaultMutantsDetector implements MutantsDetector {
-  async isMutant(dna: string[]): Promise<boolean> {
-    return Promise.resolve(this.check(dna)); // Placeholder: Implement the actual mutant detection logic here
+  async detect(dna: string[]): Promise<boolean> {
+    return Promise.resolve(this.isMutant(dna)); // Placeholder: Implement the actual mutant detection logic here
   }
 
-  check(dna: string[]): boolean {
+  isMutant(dna: string[]): boolean {
     let sequencesCount = 0;
     const n = dna.length;
     const TARGET = 2;

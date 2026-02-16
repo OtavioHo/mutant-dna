@@ -14,7 +14,7 @@ describe("DefaultMutantsService", () => {
 
   beforeEach(() => {
     mutantDetector = {
-      isMutant: vi.fn(),
+      detect: vi.fn(),
     };
     mutantsRepository = {
       saveMutant: vi.fn(),
@@ -34,12 +34,12 @@ describe("DefaultMutantsService", () => {
     it("should return true when DNA is mutant and dna not in database", async () => {
       const dna = ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"];
       vi.mocked(mutantsRepository.getMutantByHash).mockResolvedValue(null);
-      vi.mocked(mutantDetector.isMutant).mockResolvedValue(true);
+      vi.mocked(mutantDetector.detect).mockResolvedValue(true);
 
       const result = await service.checkDNA(dna);
 
       expect(result).toBe(true);
-      expect(mutantDetector.isMutant).toHaveBeenCalledWith(dna);
+      expect(mutantDetector.detect).toHaveBeenCalledWith(dna);
       expect(mutantsRepository.saveMutant).toHaveBeenCalledWith(
         dna,
         DNA_HASH,
@@ -56,19 +56,19 @@ describe("DefaultMutantsService", () => {
       const result = await service.checkDNA(dna);
 
       expect(result).toBe(true);
-      expect(mutantDetector.isMutant).not.toHaveBeenCalled();
+      expect(mutantDetector.detect).not.toHaveBeenCalled();
       expect(mutantsRepository.saveMutant).not.toHaveBeenCalled();
     });
 
     it("should return false when DNA is not mutant and dna not in database", async () => {
       const dna = ["ATGCGA", "CAGTGC", "TTATTT", "AGACGG", "GCGTCA", "TCACTG"];
-      vi.mocked(mutantDetector.isMutant).mockResolvedValue(false);
+      vi.mocked(mutantDetector.detect).mockResolvedValue(false);
       vi.mocked(mutantsRepository.getMutantByHash).mockResolvedValue(null);
 
       const result = await service.checkDNA(dna);
 
       expect(result).toBe(false);
-      expect(mutantDetector.isMutant).toHaveBeenCalledWith(dna);
+      expect(mutantDetector.detect).toHaveBeenCalledWith(dna);
       expect(mutantsRepository.saveMutant).toHaveBeenCalledWith(
         dna,
         DNA_HASH,
@@ -85,13 +85,13 @@ describe("DefaultMutantsService", () => {
       const result = await service.checkDNA(dna);
 
       expect(result).toBe(false);
-      expect(mutantDetector.isMutant).not.toHaveBeenCalled();
+      expect(mutantDetector.detect).not.toHaveBeenCalled();
       expect(mutantsRepository.saveMutant).not.toHaveBeenCalled();
     });
 
     it("should call saveMutant with correct parameters", async () => {
       const dna = ["ATGCGA"];
-      vi.mocked(mutantDetector.isMutant).mockResolvedValue(true);
+      vi.mocked(mutantDetector.detect).mockResolvedValue(true);
       vi.mocked(mutantsRepository.getMutantByHash).mockResolvedValue(null);
 
       await service.checkDNA(dna);

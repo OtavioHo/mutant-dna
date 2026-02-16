@@ -5,8 +5,8 @@ import { buildApp } from "../src/app";
 describe("buildApp", () => {
   let app: FastifyInstance;
 
-  beforeEach(() => {
-    app = buildApp();
+  beforeEach(async () => {
+    app = await buildApp();
   });
 
   afterEach(async () => {

@@ -78,6 +78,10 @@ frontend/src/
 
 ### Mutant Detection Algorithm
 
+### Implementation
+
+The mutant detection algorithm is implemented in: `/backend/src/mutants/services/mutantDetector.ts`
+
 The algorithm analyzes DNA sequences in **four directions** to find sequences of 4 identical consecutive letters:
 
 1. **Horizontal** (left to right)

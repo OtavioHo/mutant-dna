@@ -6,48 +6,48 @@ describe("DefaultMutantsDetector", () => {
 
   it("should return a boolean", async () => {
     const dna = ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(typeof result).toBe("boolean");
   });
 
   it("should handle empty DNA array", async () => {
     const dna: string[] = [];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(typeof result).toBe("boolean");
     expect(result).toBe(false);
   });
 
   it("should handle single row DNA", async () => {
     const dna = ["ATGCGA"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(typeof result).toBe("boolean");
     expect(result).toBe(false);
   });
 
   it("should handle valid DNA sequences", async () => {
     const dna = ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBeDefined();
     expect(result).toBe(true);
   });
 
   it("should handle invalid DNA sequences (non-square)", async () => {
     const dna = ["ATGCGA", "CAGTGC", "TTATGT"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBeDefined();
     expect(result).toBe(false);
   });
 
   it("should handle non-mutant DNA sequences", async () => {
     const dna = ["ATGCGA", "CAGTGC", "TTATTT", "AGACGG", "GCGTCA", "TCACTG"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBeDefined();
     expect(result).toBe(false);
   });
 
   it("should handle matrices smaller than 4x4", async () => {
     const dna = ["ATG", "CAG", "TTA"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBeDefined();
     expect(result).toBe(false);
   });
@@ -61,7 +61,7 @@ describe("DefaultMutantsDetector", () => {
       "CCCCTA", // horizontal sequence of C's
       "TCACTG",
     ];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(true);
   });
 
@@ -72,7 +72,7 @@ describe("DefaultMutantsDetector", () => {
       "AAGA",
       "AAGA", // columns 0 and 3 are 'A' repeated 4 times
     ];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(true);
   });
 
@@ -83,7 +83,7 @@ describe("DefaultMutantsDetector", () => {
       "CBAC",
       "BCCA", // main diag A, anti-diag B => two diagonal sequences
     ];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(true);
   });
 
@@ -94,13 +94,13 @@ describe("DefaultMutantsDetector", () => {
       "TATT",
       "ATTT", // anti-diagonal A, but only one sequence -> not mutant
     ];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(false);
   });
 
   it("minimal 4x4 non-mutant matrix is handled correctly", async () => {
     const dna = ["ATCG", "TAGC", "CGAT", "GCAT"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(false);
   });
 
@@ -112,7 +112,7 @@ describe("DefaultMutantsDetector", () => {
       "AGACG",
       "GTCAG",
     ];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(false);
   });
 
@@ -125,13 +125,13 @@ describe("DefaultMutantsDetector", () => {
       "GTCAGT",
       "TTACTG",
     ];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(true);
   });
 
   it("detects two diagonal sequences (top-left to bottom-right) in non-main diagonals", async () => {
     const dna = ["AAAAGA", "CAATGC", "GCAAGT", "TTGAAG", "CACCAA", "TCACTA"];
-    const result = await detector.isMutant(dna);
+    const result = await detector.detect(dna);
     expect(result).toBe(true);
   });
 });

@@ -18,7 +18,7 @@ export class DefaultMutantsService implements MutantsService {
       return cachedResult.is_mutant;
     }
 
-    const result = await this.mutantsDetector.isMutant(dna);
+    const result = await this.mutantsDetector.detect(dna);
 
     this.mutantsRepository.saveMutant(dna, hash, result);
 

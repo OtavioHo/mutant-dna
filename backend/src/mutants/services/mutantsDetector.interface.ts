@@ -1,3 +1,3 @@
 export interface MutantsDetector {
-  isMutant(dna: string[]): Promise<boolean>;
+  detect(dna: string[]): Promise<boolean>;
 }
