@@ -16,11 +16,12 @@ FROM node:24-alpine
 
 WORKDIR /app
 
+# Copy package files and install production dependencies
 COPY package*.json ./
-
 RUN npm ci --only=production
 
-COPY . .
+# Copy built files from builder stage
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
