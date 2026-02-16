@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
-import buildContainer from "../container";
-import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
-import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
+import buildContainer from "../container/index.js";
+import { CacheProvider } from "../../infra/cache/cacheProvider.interface.js";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface.js";
 
 /**
  * Register mutant-related routes on a Fastify instance.
@@ -20,7 +20,7 @@ import { DatabaseProvider } from "../../infra/database/databaseProvider.interfac
  * `app.get`. If `checkMutant` does not rely on `this` or is already bound, no
  * explicit `.bind` is necessary.
  */
-export default function routes(
+export function mutantRoutes(
   app: FastifyInstance,
   databaseProvider: DatabaseProvider,
   cacheProvider: CacheProvider,

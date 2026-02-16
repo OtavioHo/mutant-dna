@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { MutantsService } from "../services/mutantsService.interface";
-import { MutantsController } from "./mutantsController.interface";
+import { MutantsService } from "../services/mutantsService.interface.js";
+import { MutantsController } from "./mutantsController.interface.js";
 
 export class DefaultMutantsController implements MutantsController {
   constructor(private mutantsService: MutantsService) {}

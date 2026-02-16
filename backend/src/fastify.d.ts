@@ -1,4 +1,4 @@
-import buildMutantContainer from "./mutants/container";
+import buildMutantContainer from "./mutants/container/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {

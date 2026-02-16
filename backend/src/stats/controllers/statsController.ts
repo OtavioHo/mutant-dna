@@ -1,5 +1,5 @@
-import { StatsService } from "../services/statsService.interface";
-import { StatsController } from "./statsController.interface";
+import { StatsService } from "../services/statsService.interface.js";
+import { StatsController } from "./statsController.interface.js";
 
 export class DefaultStatsController implements StatsController {
   constructor(private statsService: StatsService) {}

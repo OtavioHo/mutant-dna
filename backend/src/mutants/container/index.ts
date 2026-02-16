@@ -1,10 +1,10 @@
-import { DefaultMutantsController } from "../controllers/mutantsController";
-import { DefaultMutantsRepository } from "../repositories/mutantsRepository";
-import { DefaultMutantsDetector } from "../services/mutantsDetector";
-import { DefaultMutantsService } from "../services/mutantsService";
-import { DefaultMutantsHashService } from "../services/mutantsHashService";
-import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
-import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
+import { DefaultMutantsController } from "../controllers/mutantsController.js";
+import { DefaultMutantsRepository } from "../repositories/mutantsRepository.js";
+import { DefaultMutantsDetector } from "../services/mutantsDetector.js";
+import { DefaultMutantsService } from "../services/mutantsService.js";
+import { DefaultMutantsHashService } from "../services/mutantsHashService.js";
+import { CacheProvider } from "../../infra/cache/cacheProvider.interface.js";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface.js";
 
 export default function buildContainer(
   databaseProvider: DatabaseProvider,

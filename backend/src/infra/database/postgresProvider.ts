@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { DatabaseProvider } from "./databaseProvider.interface";
+import { DatabaseProvider } from "./databaseProvider.interface.js";
 
 export class PostgresProvider implements DatabaseProvider {
   private pool: Pool;

@@ -1,5 +1,5 @@
-import { StatsRepository } from "../repositories/statsRepository.interface";
-import { StatsService } from "./statsService.interface";
+import { StatsRepository } from "../repositories/statsRepository.interface.js";
+import { StatsService } from "./statsService.interface.js";
 
 export class DefaultStatsService implements StatsService {
   constructor(private statsRepository: StatsRepository) {}

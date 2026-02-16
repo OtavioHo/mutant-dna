@@ -1,7 +1,7 @@
-import { MutantsRepository } from "../repositories/mutantsRepository.interface";
-import { MutantsDetector } from "./mutantsDetector.interface";
-import { MutantsService } from "./mutantsService.interface";
-import { MutantsHashService } from "./mutantsHashService.interface";
+import { MutantsRepository } from "../repositories/mutantsRepository.interface.js";
+import { MutantsDetector } from "./mutantsDetector.interface.js";
+import { MutantsService } from "./mutantsService.interface.js";
+import { MutantsHashService } from "./mutantsHashService.interface.js";
 
 export class DefaultMutantsService implements MutantsService {
   constructor(

@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
-import { buildContainer } from "../container";
-import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
-import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
+import { buildContainer } from "../container/index.js";
+import { CacheProvider } from "../../infra/cache/cacheProvider.interface.js";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface.js";
 
 export function statsRoutes(
   app: FastifyInstance,

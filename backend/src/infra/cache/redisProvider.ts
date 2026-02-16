@@ -1,4 +1,4 @@
-import { CacheProvider } from "./cacheProvider.interface";
+import { CacheProvider } from "./cacheProvider.interface.js";
 import { createClient } from "redis";
 
 export class RedisCacheProvider implements CacheProvider {

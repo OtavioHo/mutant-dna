@@ -1,6 +1,6 @@
-import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
-import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
-import { StatsRepository } from "./statsRepository.interface";
+import { CacheProvider } from "../../infra/cache/cacheProvider.interface.js";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface.js";
+import { StatsRepository } from "./statsRepository.interface.js";
 
 export class DefaultStatsRepository implements StatsRepository {
   constructor(

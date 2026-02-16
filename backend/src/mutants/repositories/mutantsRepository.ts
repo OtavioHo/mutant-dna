@@ -1,6 +1,6 @@
-import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
-import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
-import { MutantsRepository } from "./mutantsRepository.interface";
+import { CacheProvider } from "../../infra/cache/cacheProvider.interface.js";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface.js";
+import { MutantsRepository } from "./mutantsRepository.interface.js";
 
 export class DefaultMutantsRepository implements MutantsRepository {
   constructor(

@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import { MutantsHashService } from "./mutantsHashService.interface";
+import { MutantsHashService } from "./mutantsHashService.interface.js";
 
 export class DefaultMutantsHashService implements MutantsHashService {
   hashDNA(dna: string[]): string {

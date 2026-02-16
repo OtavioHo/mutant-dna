@@ -1,22 +1,21 @@
 {
   "compilerOptions": {
-    "types": ["node"],
-    "target": "ES2022",
-    "module": "es2022",
-    "moduleResolution": "bundler",
+    "target": "ES2022", 
+    "moduleResolution": "node16",
+    "module": "node16",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "resolveJsonModule": true,
     "sourceMap": true,
     "noEmitOnError": true,
     "inlineSources": true,
     "typeRoots": ["./node_modules/@types"],
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "tests"],
 }

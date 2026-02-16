@@ -1,4 +1,4 @@
-import { MutantsDetector } from "./mutantsDetector.interface";
+import { MutantsDetector } from "./mutantsDetector.interface.js";
 
 export class DefaultMutantsDetector implements MutantsDetector {
   async isMutant(dna: string[]): Promise<boolean> {

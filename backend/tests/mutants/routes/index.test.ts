@@ -1,14 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { FastifyInstance } from "fastify";
-import routes from "../../../src/mutants/routes/index";
+import { mutantRoutes } from "../../../src/mutants/routes/index";
 import buildContainer from "../../../src/mutants/container";
 
 vi.mock("../../../src/mutants/container");
 
-describe("routes", () => {
+describe("mutantRoutes", () => {
   let mockApp: FastifyInstance;
   let mockContainer: any;
   let mockCheckMutant: any;
+  let mockDatabaseProvider: any;
+  let mockCacheProvider: any;
 
   beforeEach(() => {
     mockCheckMutant = vi.fn();
@@ -17,6 +19,8 @@ describe("routes", () => {
         checkMutant: mockCheckMutant,
       },
     };
+    mockDatabaseProvider = {} as any;
+    mockCacheProvider = {} as any;
 
     mockApp = {
       decorate: vi.fn(),
@@ -27,13 +31,13 @@ describe("routes", () => {
   });
 
   it("should build the container", () => {
-    routes(mockApp);
+    mutantRoutes(mockApp, mockDatabaseProvider, mockCacheProvider);
 
     expect(buildContainer).toHaveBeenCalledOnce();
   });
 
   it("should decorate the app with mutantContainer", () => {
-    routes(mockApp);
+    mutantRoutes(mockApp, mockDatabaseProvider, mockCacheProvider);
 
     expect(mockApp.decorate).toHaveBeenCalledWith(
       "mutantContainer",
@@ -42,7 +46,7 @@ describe("routes", () => {
   });
 
   it("should register POST / route with checkMutant handler", () => {
-    routes(mockApp);
+    mutantRoutes(mockApp, mockDatabaseProvider, mockCacheProvider);
 
     expect(mockApp.post).toHaveBeenCalledWith("/", {
       handler: mockCheckMutant,

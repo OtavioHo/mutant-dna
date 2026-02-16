@@ -1,8 +1,8 @@
-import { CacheProvider } from "../../infra/cache/cacheProvider.interface";
-import { DatabaseProvider } from "../../infra/database/databaseProvider.interface";
-import { DefaultStatsController } from "../controllers/statsController";
-import { DefaultStatsRepository } from "../repositories/statsRepository";
-import { DefaultStatsService } from "../services/statsService";
+import { CacheProvider } from "../../infra/cache/cacheProvider.interface.js";
+import { DatabaseProvider } from "../../infra/database/databaseProvider.interface.js";
+import { DefaultStatsController } from "../controllers/statsController.js";
+import { DefaultStatsRepository } from "../repositories/statsRepository.js";
+import { DefaultStatsService } from "../services/statsService.js";
 
 export function buildContainer(
   databaseProvider: DatabaseProvider,

@@ -1,8 +1,8 @@
 import Fastify, { FastifyInstance } from "fastify";
-import mutantRoutes from "./mutants/routes/index";
-import { statsRoutes } from "./stats/routes/index";
-import { RedisCacheProvider } from "./infra/cache/redisProvider";
-import { PostgresProvider } from "./infra/database/postgresProvider";
+import { mutantRoutes } from "./mutants/routes/index.js";
+import { statsRoutes } from "./stats/routes/index.js";
+import { RedisCacheProvider } from "./infra/cache/redisProvider.js";
+import { PostgresProvider } from "./infra/database/postgresProvider.js";
 import dotenv from "dotenv";
 
 export function buildApp(): FastifyInstance {

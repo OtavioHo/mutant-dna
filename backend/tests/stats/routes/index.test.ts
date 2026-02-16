@@ -9,6 +9,8 @@ describe("stats/routes/index", () => {
   let mockApp: FastifyInstance;
   let mockContainer: any;
   let mockGetStats: any;
+  let mockDatabaseProvider: any;
+  let mockCacheProvider: any;
 
   beforeEach(() => {
     mockGetStats = vi.fn();
@@ -17,6 +19,8 @@ describe("stats/routes/index", () => {
         getStats: mockGetStats,
       },
     };
+    mockDatabaseProvider = {} as any;
+    mockCacheProvider = {} as any;
 
     mockApp = {
       decorate: vi.fn(),
@@ -27,7 +31,7 @@ describe("stats/routes/index", () => {
   });
 
   it("builds container and decorates Fastify instance", () => {
-    statsRoutes(mockApp);
+    statsRoutes(mockApp, mockDatabaseProvider, mockCacheProvider);
 
     expect(buildContainer).toHaveBeenCalled();
     expect(mockApp.decorate).toHaveBeenCalledWith(
